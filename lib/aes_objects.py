@@ -68,13 +68,13 @@ class Aes_sha256:
 		# Decrypt the cipher-text and finally unpad the plain-text data.
 		return aes_decrypt(self.cipher, ct)
 
-def aes_cipher(alg, passwd):
-	alg_dict = {
-		'scrypt': Aes_scrypt,
-		'sha256': Aes_sha256,
-		}
+def get_class(alg_dict, alg):
 	try:
-		target_class = alg_dict[alg]
-		return target_class(passwd)
+		return alg_dict[alg]
 	except KeyError:
 		exit('Invalid encryption algorithm: ' + alg +' use -h/--help for examples.')
+	
+def aes_cipher(alg, passwd):
+	alg_dict = { 'scrypt': Aes_scrypt, 'sha256': Aes_sha256 }
+	target_class = get_class(alg_dict, alg)
+	return target_class(passwd)
