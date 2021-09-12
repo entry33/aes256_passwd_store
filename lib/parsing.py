@@ -2,7 +2,7 @@
 # Author: https://github.com/c0dy-c0des
 import re
 
-def get_line()
+def get_line():
 	try:
 		line = input()
 	except EOFError:
