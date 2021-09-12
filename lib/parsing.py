@@ -6,7 +6,8 @@ def get_line():
 	try:
 		line = input()
 	except EOFError:
-		return None
+		line = None
+	return line
 
 # Read multiple lines of input from stdin until EOF (ctrl+D/ctrl+C) is detected 
 def read_lines(msg, pt='', line_check=True):
