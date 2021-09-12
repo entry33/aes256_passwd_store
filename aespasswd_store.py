@@ -113,7 +113,6 @@ class Data_handler:
 		# Get query keys from stdin.
 		keys = read_lines('Enter password ids you wish to retrieve (entering nothing will dump all):',
 						line_check=False)
-
 		if not keys:
 			keys = pt
 		else:
