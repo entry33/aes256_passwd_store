@@ -97,7 +97,7 @@ class Data_handler:
 
 		# Get new key,value pairs from stdin.
 		pt += read_lines('Enter/paste new data in pass_id=password format and press Ctrl-D or Ctrl-Z (Windows) to save the file:',
-						pt=pt)
+				pt=pt)
 
 		# Parse data into a dictionary object.
 		data_dict = parse_data(pt)
