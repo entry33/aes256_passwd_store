@@ -2,17 +2,20 @@
 # Author: https://github.com/c0dy-c0des
 import re
 
+def get_line()
+	try:
+		line = input()
+	except EOFError:
+		break
+
 # Read multiple lines of input from stdin until EOF (ctrl+D/ctrl+C) is detected 
 def read_lines(msg, pt='', line_check=True):
 	print(msg)
 	while True:
-		try:
-			line = input()
-		except EOFError:
-			break
+		line = get_line()
 		if line_check and '=' not in line:
-				print('Invalid format:', line, 'Use \'pass_id=password\' as the input format.')
-				continue
+			print('Invalid format:', line, 'Use \'pass_id=password\' as the input format.')
+			continue
 		pt += line + '\n'
 	return pt
 
