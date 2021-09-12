@@ -1,4 +1,4 @@
-# AES-256 Password manager
+#  aes256_passwd_store
 
 This script securely encrypts or decrypts passwords and stores them locally on disk within a custom database file, it also features functionality to retrieve passwords from a previously generated database file. This script takes a master password from stdin/from memory. It then hashes the password using the specified hashing algorithm (scrypt, sha256) and finally AES-256 encrypts/decrypts the file's data using the algorithm's hash as the AES-256 key. When providing the 'scrypt' argument to the algorithm parameter the script will generate a custom scrypt salt per each database file edit or creation. The uniquely generated salt is base64 encoded and prepended to each database file's encrypted bytes separated by carriage return line feed bytes (for parsing) as meta-data. When using the change password parameter/-cp the script will write random bytes*WIPE_PASSES to the previous database file, effectively making data recovery/forensics difficult.
 
