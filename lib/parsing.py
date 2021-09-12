@@ -6,14 +6,16 @@ def get_line():
 	try:
 		line = input()
 	except EOFError:
-		break
+		return None
 
 # Read multiple lines of input from stdin until EOF (ctrl+D/ctrl+C) is detected 
 def read_lines(msg, pt='', line_check=True):
 	print(msg)
 	while True:
 		line = get_line()
-		if line_check and '=' not in line:
+		if not line:
+			break
+		elif line_check and '=' not in line:
 			print('Invalid format:', line, 'Use \'pass_id=password\' as the input format.')
 			continue
 		pt += line + '\n'
