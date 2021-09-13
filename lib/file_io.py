@@ -1,7 +1,30 @@
 # Author: https://github.com/c0dy-c0des
 import os
+from multiprocessing import Process
 
-WIPE_PASSES = 1024*100
+# Number of child processes to start/launch.
+PROC_COUNT = 10
+
+# Total wipe passes (will be divided by PROC_COUNT).
+WIPE_PASSES = 1024*512
+
+def child_process(method):
+    def wrapper(*args):
+        p = Process(target=method, args=args)
+        p.start()
+        return p
+    return wrapper
+
+@child_process
+def write_rand(f, passes, length):
+	for _ in range(passes):
+		f.seek(0)
+		rand_data = os.urandom(length)
+		f.write(rand_data)
+
+def join_child_procs(procs):
+	for p in procs:
+		p.join()
 
 class File_io:
 	def __init__(self, filename):
@@ -27,7 +50,10 @@ class File_io:
 	def wipe_dbfile(self):
 		with open(self.filename, "br+") as f:
 			length = os.path.getsize(self.filename)
-			for i in range(WIPE_PASSES):
-				f.seek(0)
-				f.write(os.urandom(length))
+			procs = []
+			chunks = int(WIPE_PASSES / PROC_COUNT)
+			for _ in range(PROC_COUNT):
+				p = write_rand(f, chunks, length)
+				procs.append(p)
+			join_child_procs(procs)
 			f.truncate()
