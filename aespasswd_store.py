@@ -26,7 +26,7 @@ def parse_args():
 	                    help='Dump all data or query data within database file based on unique password identifier(s).')
 	return parser.parse_args()
 
-def parse_method(method_dict):
+def get_method(method_dict):
 	for arg, method in method_dict.items():
 		 if arg:
 		 	return arg, method
@@ -143,8 +143,8 @@ def dh_call(args):
 		args.query: Data_handler.query_data
 	}
 
-	# Parse filename and target method.
-	Data_handler.filename, method = parse_method(method_dict)
+	# Get filename and target method.
+	Data_handler.filename, method = get_method(method_dict)
 
 	# Instantiate our data handler object and call target method.
 	dh_self = Data_handler(args.algorithm, passwd)
