@@ -26,11 +26,21 @@ def parse_args():
 	                    help='Dump all data or query data within database file based on unique password identifier(s).')
 	return parser.parse_args()
 
+def parse_method(method_dict):
+	for arg, method in method_dict.items():
+		 if arg:
+		 	return arg, method
+
 def passwd_confirm(passwd):
 	# Check if passwords match.
 	tmp_passwd = getpass(prompt='Re-enter password: ')
 	if tmp_passwd != passwd:
 		exit('**ERROR**: Passwords do not match.')
+
+def parse_keys(pt, key_input):
+	if not key_input:
+		return pt
+	return key_input.split()
 
 # Class to handle encryption/decryption along with IO + parsing.
 class Data_handler:
@@ -40,6 +50,7 @@ class Data_handler:
 		# Generate our aes object.
 		self.alg = alg
 		self.aes = aes_cipher(alg, passwd)
+		self.passwd = passwd
 		self.file_io = File_io(Data_handler.filename)
 
 	# Open, read and decrypt the db file.
@@ -63,6 +74,8 @@ class Data_handler:
 
 	# Create file handler.
 	def create_file(self):
+		passwd_confirm(self.passwd)
+
 		# Get data to be quired from stdin.
 		pt = read_lines("Enter/paste data in pass_id=password format and press Ctrl-D or Ctrl-Z (Windows) to save the file:")
 
@@ -110,13 +123,10 @@ class Data_handler:
 		# Decrypt database file data.
 		pt = self.__db_read()
 
-		# Get query keys from stdin.
-		keys = read_lines('Enter password ids you wish to retrieve (entering nothing will dump all):',
-				line_check=False)
-		if not keys:
-			keys = pt
-		else:
-			keys = keys.split()
+		# Get query keys input from stdin and parse the keys.
+		key_input = read_lines('Enter password ids you wish to retrieve (entering nothing will dump all):',
+					line_check=False)
+		keys = parse_keys(pt, key_input)
 
 		# Parse and print data to stdout.
 		print('Decrypted data queried:\n')
@@ -126,34 +136,22 @@ def dh_call(args):
 	# Get master password from stdin.
 	passwd = getpass(prompt='Enter master password to encrypt/decrypt the database file\'s data: ')
 
-	# Create a database file.
-	if args.create:
-		Data_handler.filename = args.create
-		passwd_confirm(passwd)
-		dh_method = Data_handler.create_file
-	
-	# Change the password, i.e. decrypt data and encrypt with new password and write to db file.
-	elif args.change_pass:
-		Data_handler.filename = args.change_pass
-		dh_method = Data_handler.change_passwd
-	
-	# Create the file and write encrypted input data to it.
-	elif args.edit:
-		Data_handler.filename = args.edit
-		dh_method = Data_handler.edit_file
-	
-	# Query/retrieve data from the database file's data and print to stdout.
-	elif args.query:
-		Data_handler.filename = args.query
-		dh_method = Data_handler.query_data
+	method_dict = {
+		args.create: Data_handler.create_file,
+		args.change_pass: Data_handler.change_passwd,
+		args.edit: Data_handler.edit_file,
+		args.query: Data_handler.query_data
+	}
 
-	# Instantiate our data handler object.
+	# Parse filename and target method.
+	Data_handler.filename, method = parse_method(method_dict)
+
+	# Instantiate our data handler object and call target method.
 	dh_self = Data_handler(args.algorithm, passwd)
-
-	# Call target method.
-	dh_method(dh_self)
+	method(dh_self)
 
 def main():
+	# Parse args.
 	args = parse_args()
 
 	# Generate dh object and call dh methods.
