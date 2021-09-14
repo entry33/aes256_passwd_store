@@ -137,11 +137,12 @@ def dh_call(args):
 	passwd = getpass(prompt='Enter master password to encrypt/decrypt the database file\'s data: ')
 
 	method_dict = {
-		args.create: Data_handler.create_file,
+		args.create:	  Data_handler.create_file,
 		args.change_pass: Data_handler.change_passwd,
-		args.edit: Data_handler.edit_file,
-		args.query: Data_handler.query_data
+		args.edit: 	  Data_handler.edit_file,
+		args.query: 	  Data_handler.query_data
 	}
+
 
 	# Get filename and target method.
 	Data_handler.filename, method = get_method(method_dict)
