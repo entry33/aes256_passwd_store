@@ -132,16 +132,21 @@ class Data_handler:
 		print('Decrypted data queried:\n')
 		parse_data(pt, keys, True)
 
-def dh_call(args):
+def parse_method(args):
 	method_dict = {
 		args.create:	  Data_handler.create_file,
 		args.change_pass: Data_handler.change_passwd,
 		args.edit: 	  Data_handler.edit_file,
 		args.query: 	  Data_handler.query_data
 	}
+	return get_method(method_dict)
+
+def main():
+	# Parse args.
+	args = parse_args()
 
 	# Get filename and target method.
-	Data_handler.filename, method = get_method(method_dict)
+	Data_handler.filename, method = parse_method(args)
 
 	# Get master password from stdin.
 	passwd = getpass(prompt='Enter master password to encrypt/decrypt the database file\'s data: ')
@@ -149,13 +154,6 @@ def dh_call(args):
 	# Instantiate our data handler object and call target method.
 	dh_self = Data_handler(args.algorithm, passwd)
 	method(dh_self)
-
-def main():
-	# Parse args.
-	args = parse_args()
-
-	# Generate dh object and call dh methods.
-	dh_call(args)
 
 if __name__ == '__main__':
 	main()
