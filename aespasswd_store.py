@@ -26,11 +26,6 @@ def parse_args():
 	                    help='Dump all data or query data within database file based on unique password identifier(s).')
 	return parser.parse_args()
 
-def get_method(method_dict):
-	for arg, method in method_dict.items():
-		 if arg:
-		 	return arg, method
-
 def passwd_confirm(passwd):
 	# Check if passwords match.
 	tmp_passwd = getpass(prompt='Re-enter password: ')
@@ -132,6 +127,11 @@ class Data_handler:
 		print('Decrypted data queried:\n')
 		parse_data(pt, keys, True)
 
+def get_method(method_dict):
+	for arg, method in method_dict.items():
+		 if arg:
+		 	return arg, method
+		
 def parse_method(args):
 	method_dict = {
 		args.create:	  Data_handler.create_file,
