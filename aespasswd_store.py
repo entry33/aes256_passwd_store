@@ -133,9 +133,6 @@ class Data_handler:
 		parse_data(pt, keys, True)
 
 def dh_call(args):
-	# Get master password from stdin.
-	passwd = getpass(prompt='Enter master password to encrypt/decrypt the database file\'s data: ')
-
 	method_dict = {
 		args.create:	  Data_handler.create_file,
 		args.change_pass: Data_handler.change_passwd,
@@ -143,9 +140,11 @@ def dh_call(args):
 		args.query: 	  Data_handler.query_data
 	}
 
-
 	# Get filename and target method.
 	Data_handler.filename, method = get_method(method_dict)
+
+	# Get master password from stdin.
+	passwd = getpass(prompt='Enter master password to encrypt/decrypt the database file\'s data: ')
 
 	# Instantiate our data handler object and call target method.
 	dh_self = Data_handler(args.algorithm, passwd)
