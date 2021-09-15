@@ -128,10 +128,13 @@ class Data_handler:
 		parse_data(pt, keys, True)
 
 def get_method(method_dict):
-	for arg, method in method_dict.items():
-		 if arg:
-		 	return arg, method
-		
+	# Remove None key, value pair.
+	method_dict.pop(None)
+
+	# Return filename and target_method from the remaining key, value pair.
+	[(filename, target_method)] = method_dict.items()
+	return filename, target_method
+
 def parse_method(args):
 	method_dict = {
 		args.create:	  Data_handler.create_file,
@@ -146,14 +149,14 @@ def main():
 	args = parse_args()
 
 	# Get filename and target method.
-	Data_handler.filename, method = parse_method(args)
+	Data_handler.filename, target_method = parse_method(args)
 
 	# Get master password from stdin.
 	passwd = getpass(prompt='Enter master password to encrypt/decrypt the database file\'s data: ')
 
 	# Instantiate our data handler object and call target method.
 	dh_self = Data_handler(args.algorithm, passwd)
-	method(dh_self)
+	target_method(dh_self)
 
 if __name__ == '__main__':
 	main()
