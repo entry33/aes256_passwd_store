@@ -71,7 +71,7 @@ class Data_handler:
 	def create_file(self):
 		passwd_confirm(self.passwd)
 
-		# Get data to be quired from stdin.
+		# Get data to be saved from stdin.
 		pt = read_lines("Enter/paste data in pass_id=password format and press Ctrl-D or Ctrl-Z (Windows) to save the file:")
 
 		# Parse data.
