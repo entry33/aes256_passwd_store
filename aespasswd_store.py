@@ -64,8 +64,8 @@ class Data_handler:
 			data = format_data(data)
 
 		# Encrypt the data and write its salt + data to a database file.
-		enc_list = self.aes.encrypt(data)
-		self.file_io.write_file(enc_list)
+		enc_data = self.aes.encrypt(data)
+		self.file_io.write_file(enc_data)
 
 	# Create file handler.
 	def create_file(self):
