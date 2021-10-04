@@ -4,10 +4,9 @@ import re
 
 def get_line():
 	try:
-		line = input()
+		return input()
 	except EOFError:
-		line = None
-	return line
+		return None
 
 # Read multiple lines of input from stdin until EOF (ctrl+D/ctrl+C) is detected 
 def read_lines(msg, pt='', line_check=True):
