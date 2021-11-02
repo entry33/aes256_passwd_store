@@ -53,7 +53,7 @@ class Data_handler:
 		# Read the database file's bytes.
 		file_data = self.file_io.read_file()
 
-		# Return decrypted the cipher-text
+		# Return decrypted cipher-text
 		return self.aes.decrypt(file_data)
 
 	# Write encrypted data to a database file.
