@@ -17,10 +17,11 @@ def child_process(method):
 
 @child_process
 def write_rand(f, passes, length):
-	for _ in range(passes):
+	while passes:
 		f.seek(0)
 		rand_data = os.urandom(length)
 		f.write(rand_data)
+		passes -= 1
 
 def join_child_procs(procs):
 	for p in procs:
